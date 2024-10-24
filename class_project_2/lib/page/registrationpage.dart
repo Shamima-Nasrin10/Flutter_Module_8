@@ -42,6 +42,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.redAccent
                 ),
               ),
             ),
