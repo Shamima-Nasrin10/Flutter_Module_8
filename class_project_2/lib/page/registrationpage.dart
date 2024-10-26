@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:class_project_2/page/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as dtPicker;
@@ -61,7 +61,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     String dob,
     String gender,
   ) async {
-    const String url = 'http://localhost/api/register';
+    const String url = 'http://localhost:8080/api/register';
     final response = await http.post(
       Uri.parse(url),
       headers: {
@@ -99,6 +99,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.redAccent),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: name,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
                   ),
                 ),
                 SizedBox(
@@ -235,6 +246,26 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                       )),
+                ),
+                SizedBox(height: 10),
+
+                // Login Text Button
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      );
+                    },
+                    child: Text(
+                      'Already have account? Login',
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
