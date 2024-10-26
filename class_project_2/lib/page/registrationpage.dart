@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as dtPicker;
 import 'package:intl/intl.dart'; // Import for DateFormat
+import 'package:http/http.dart' as http;
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -26,14 +29,55 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String? selectedGender;
   final _formKey = GlobalKey<FormState>();
 
-  void _register() {
+  void _register() async {
     if (_formKey.currentState!.validate()) {
       String uName = name.text;
       String uEmail = email.text;
       String uPassword = password.text;
-      
-      print('Name: $uName, Email: $uEmail, Password: $uPassword');
+      String uCell = cell.text;
+      String uAddress = address.text;
+      String uDob = dob.text;
+      String uGender = selectedGender ?? 'Other';
+
+      final response = await _sendDataToBackend(
+          uName, uEmail, uPassword, uCell, uAddress, uDob, uGender);
+
+      if (response.statusCode == 201 || response.statusCode==200) {
+        print('Registration Successful');
+      } else if (response.statusCode == 409) {
+        print('User already exists');
+      } else {
+        print('Registration failed with status: ${response.statusCode}');
+      }
     }
+  }
+
+  Future<http.Response> _sendDataToBackend(
+    String name,
+    String email,
+    String password,
+    String cell,
+    String address,
+    String dob,
+    String gender,
+  ) async {
+    const String url = 'http://localhost/api/register';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'name': name,
+        'email': email,
+        'password': password,
+        'cell': cell,
+        'address': address,
+        'dob': dob,
+        'gender': gender,
+      }),
+    );
+    return response;
   }
 
   @override
@@ -186,13 +230,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         "Registration",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
-                          color: Colors.redAccent
-                        ),
+                            color: Colors.redAccent),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                      )
-                  ),
+                      )),
                 )
               ],
             ),
