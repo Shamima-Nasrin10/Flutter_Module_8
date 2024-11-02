@@ -84,7 +84,7 @@ class Login extends StatelessWidget {
                   decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.password)),
+                      prefixIcon: Icon(Icons.lock)),
                   obscureText: true,
                 ),
                 SizedBox(
